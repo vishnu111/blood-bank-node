@@ -12,7 +12,26 @@ exports.addUserData = (req, res, err) => {
       state: req.body.user_state,
       pin: req.body.user_pin,
     });
-    await user.save();
+    await user.save().then((result) => {
+      console.log("USER ADDED");
+      res.status().send(200);
+    });
   }
   addData();
+};
+exports.searchCity = (req, res, err) => {
+  if (req.body.searchCity !== null) run();
+  async function run() {
+    try {
+      // const user = await User.find({ city: req.body.searchCity });
+
+      const user = await User.find({
+        city: { $regex: req.body.searchCity, $options: "i" },
+      });
+      console.log(JSON.stringify(user));
+      await res.end(JSON.stringify(user));
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
 };
