@@ -23,12 +23,22 @@ exports.searchCity = (req, res, err) => {
   if (req.body.searchCity !== null) run();
   async function run() {
     try {
-      // const user = await User.find({ city: req.body.searchCity });
-
       const user = await User.find({
         city: { $regex: req.body.searchCity, $options: "i" },
       });
-      console.log(JSON.stringify(user));
+      await res.end(JSON.stringify(user));
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+};
+exports.searchBloodGroup = (req, res, err) => {
+  if (req.body.bloodGroupId !== null) run();
+  async function run() {
+    try {
+      const user = await User.find({
+        bloodGroup: req.body.bloodGroupId,
+      });
       await res.end(JSON.stringify(user));
     } catch (e) {
       console.log(e.message);
